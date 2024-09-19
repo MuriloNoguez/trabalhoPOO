@@ -1,5 +1,4 @@
 import Prompt from "prompt-sync";
-import * as fs from 'fs';
 import { Quadra } from "./Quadra";
 import { salvarQuadras } from "./function";
 import { carregarQuadras } from "./function";
