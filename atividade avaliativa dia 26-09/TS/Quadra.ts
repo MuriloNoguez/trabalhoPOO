@@ -1,11 +1,15 @@
 export class Quadra {
     nome: string;
     esporte: string;
+    horariosI: string;
+    horariosF: string;
+
 
     constructor(nome: string) {
         this.nome = nome;
         this.esporte = "";
-    
+        this.horariosI = ""; 
+        this.horariosF = "";
     }
 }
 

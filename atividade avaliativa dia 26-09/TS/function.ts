@@ -5,7 +5,7 @@ import { teclado } from './index';
 //////////////////////SALVA QUADRAS////////////////////////
 export function salvarQuadras(quadras: Quadra[]) {
     const dados = quadras.map(quadra => `Nome: ${quadra.nome}, Esporte: ${quadra.esporte}`).join('\n');
-    fs.writeFileSync('quadras.txt', dados, { encoding: 'utf8', flag: 'w' });
+    fs.writeFileSync('quadras.txt', dados, { encoding: 'utf8', flag: 'a' });
 }
 
 //////////////////////CARREGA QUADRAS////////////////////////
@@ -79,3 +79,6 @@ export function carregarAgendamentos(p0: never[]): Agendamento[] {
 
     return agendamentos;
 }
+
+/////////////////////Calcula Horário////////////////////////
+export function calculoHora(horario: string): number {

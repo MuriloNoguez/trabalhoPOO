@@ -1,2 +1,1 @@
-Nome: Quadra UM, Esporte: ESPORTE TAL
-Nome: Quadra DOIS, Esporte: ESPORTE TOL
+Nome: lal, Esporte: lil

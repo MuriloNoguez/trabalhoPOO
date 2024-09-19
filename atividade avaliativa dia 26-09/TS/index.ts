@@ -1,11 +1,12 @@
 import Prompt from "prompt-sync";
 import { Quadra, Agendamento } from "./Quadra";
-import { salvarQuadras, carregarQuadras, carregarAgendamentos, salvarAgendamento } from "./function";
+import { salvarQuadras, carregarQuadras, carregarAgendamentos, salvarAgendamento, calculoHora } from "./function";
 
 export const teclado = Prompt();
 console.log("Login");
 const usuario = teclado("Usuário: ");
 const senha = teclado("Senha: ");
+const horarios = new Array();
 const quadras: Quadra[] = carregarQuadras();
 const agendamentos: Agendamento[] = carregarAgendamentos([]);
 
@@ -32,12 +33,21 @@ if (usuario === "admin" && senha === "admin") {
             case 1:
                 const nome = teclado("Nome da quadra: ");
                 const esporte = teclado("Esporte: ");
+                const horarioI = teclado("Digite o primiero hora de funcionamento(24Hrs): ");
+                const horarioF = teclado("Digite a hora final de funcionamento(24Hrs)): ");
+                if (horarioI > horarioF) {
+                    console.log("Horário de funcionamento inválido.");
+                    break;
+                } else {
                 const quadra = new Quadra(nome); 
+                quadra.horariosI = horarioI;
+                quadra.horariosF = horarioF;
                 quadra.esporte = esporte;
                 quadras.push(quadra); 
                 console.log("Quadra cadastrada com sucesso!");
                 salvarQuadras(quadras);
-                break;
+                calculoHora(horarioI);
+                break;}
             case 2:
                 console.log("Funcionalidade de editar quadras ainda não implementada.");
                 break;
