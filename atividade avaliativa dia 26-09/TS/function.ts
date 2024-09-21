@@ -4,10 +4,11 @@ import { teclado } from './index';
 
 //////////////////////SALVA QUADRAS////////////////////////
 export function salvarQuadras(quadras: Quadra[]) {
-    const dados = quadras.map(quadra => `Nome: ${quadra.nome}, Esporte: ${quadra.esporte}`).join('\n');
+    const dados = quadras.map(quadra => `Nome: ${quadra.nome}, Esporte: ${quadra.esporte}, Horário Inicial: ${quadra.horariosI}, Horário Final: ${quadra.horariosF}`).join('\n');
     fs.writeFileSync('quadras.txt', dados, { encoding: 'utf8', flag: 'a' });
 }
 
+//////////////////////CARREGA QUADRAS////////////////////////
 //////////////////////CARREGA QUADRAS////////////////////////
 export function carregarQuadras(): Quadra[] {
     if (!fs.existsSync('quadras.txt')) {  
@@ -19,14 +20,25 @@ export function carregarQuadras(): Quadra[] {
     const linhas = dados.split('\n').filter(linha => linha.trim() !== '');
 
     const quadras: Quadra[] = linhas.map(linha => {
-        const [nome, esporte] = linha.replace("Nome: ", "").split(", Esporte: ");
+        // Dividindo os campos com base no formato salvo
+        const [nome, esporte, horarioInicial, horarioFinal] = linha
+            .replace("Nome: ", "")
+            .replace("Esporte: ", "")
+            .replace("Horário Inicial: ", "")
+            .replace("Horário Final: ", "")
+            .split(", ");
+
         const quadra = new Quadra(nome);
         quadra.esporte = esporte;
+        quadra.horariosI = horarioInicial;
+        quadra.horariosF = horarioFinal;
+
         return quadra;
     });
 
     return quadras;
 }
+
 
 //////////////////////AGENDA QUADRAS////////////////////////
 export function agendarQuadra(quadra: Quadra): Agendamento {
@@ -81,4 +93,55 @@ export function carregarAgendamentos(p0: never[]): Agendamento[] {
 }
 
 /////////////////////Calcula Horário////////////////////////
-export function calculoHora(horario: string): number {
+export function calculoHora(horarioInicio: string, horarioFim: string): string[] {
+    const horarios: string[] = [];
+
+    // Validação dos horários no formato HH:mm
+    const regex = /^([01]\d|2[0-3]):([0-5]\d)$/;
+    if (!regex.test(horarioInicio) || !regex.test(horarioFim)) {
+        throw new Error("Formato de horário inválido. Use HH:mm.");
+    }
+
+    // Convertendo horários para minutos
+    const [horaInicio, minutoInicio] = horarioInicio.split(':').map(Number);
+    const [horaFim, minutoFim] = horarioFim.split(':').map(Number);
+
+    // Converte horas e minutos em total de minutos a partir da meia-noite
+    let minutosAtuais = horaInicio * 60 + minutoInicio;
+    const minutosFim = horaFim * 60 + minutoFim;
+
+    // Itera de 30 em 30 minutos até chegar ao horário final
+    while (minutosAtuais <= minutosFim) {
+        const horas = Math.floor(minutosAtuais / 60);
+        const minutos = minutosAtuais % 60;
+        const horarioFormatado = `${String(horas).padStart(2, '0')}:${String(minutos).padStart(2, '0')}`;
+        horarios.push(horarioFormatado);
+
+        // Incrementa em 30 minutos
+        minutosAtuais += 60;
+    }
+
+    return horarios;
+}
+
+export function formatarQuadras(quadras: Quadra[]) {
+    return quadras.map(quadra => ({
+        "Nome da Quadra": quadra.nome,
+        "Esporte": quadra.esporte,
+        "Horário de Início": quadra.horariosI,
+        "Horário Final": quadra.horariosF
+    }));
+}
+
+/////////////////////Calcula Horário Disponível////////////////////////
+export function calcularHorariosDisponiveis(quadra: Quadra, agendamentos: Agendamento[], data: string): string[] {
+    const horariosDisponiveis = calculoHora(quadra.horariosI, quadra.horariosF);
+    
+    // Filtra horários já ocupados
+    const horariosOcupados = agendamentos
+        .filter(agendamento => agendamento.quadra.nome === quadra.nome && agendamento.data === data)
+        .map(agendamento => agendamento.horario);
+
+    // Retorna apenas os horários que não estão ocupados
+    return horariosDisponiveis.filter(horario => !horariosOcupados.includes(horario));
+}

@@ -1,6 +1,6 @@
 import Prompt from "prompt-sync";
 import { Quadra, Agendamento } from "./Quadra";
-import { salvarQuadras, carregarQuadras, carregarAgendamentos, salvarAgendamento, calculoHora } from "./function";
+import { salvarQuadras, carregarQuadras, carregarAgendamentos, salvarAgendamento, calculoHora, formatarQuadras, calcularHorariosDisponiveis } from "./function";
 
 export const teclado = Prompt();
 console.log("Login");
@@ -35,6 +35,7 @@ if (usuario === "admin" && senha === "admin") {
                 const esporte = teclado("Esporte: ");
                 const horarioI = teclado("Digite o primiero hora de funcionamento(24Hrs): ");
                 const horarioF = teclado("Digite a hora final de funcionamento(24Hrs)): ");
+
                 if (horarioI > horarioF) {
                     console.log("Horário de funcionamento inválido.");
                     break;
@@ -46,7 +47,6 @@ if (usuario === "admin" && senha === "admin") {
                 quadras.push(quadra); 
                 console.log("Quadra cadastrada com sucesso!");
                 salvarQuadras(quadras);
-                calculoHora(horarioI);
                 break;}
             case 2:
                 console.log("Funcionalidade de editar quadras ainda não implementada.");
@@ -56,7 +56,8 @@ if (usuario === "admin" && senha === "admin") {
                 if (quadras.length === 0) {
                     console.log("Nenhuma quadra cadastrada.");
                 } else {
-                    console.table(quadras);
+                    const quadrasFormatadas = formatarQuadras(quadras);
+                    console.table(quadrasFormatadas);
                 }
                 break;
             default:
@@ -95,14 +96,22 @@ if (usuario === "admin" && senha === "admin") {
             
                     const quadra = quadras[indice];
                     if (quadra) {
+                            const dataSelecionada = teclado("Digite a data para agendar: ");
+                            const horariosDisponiveis = calcularHorariosDisponiveis(quadra, agendamentos, dataSelecionada);
+
+                            console.log("Horários disponíveis:");
+                            console.table(horariosDisponiveis);
+                            
+                            const indiceHorario = +teclado("Escolha o índice do horário para agendar: ");
+                            if (indiceHorario >= 0 && indiceHorario < horariosDisponiveis.length) {
                         const agendamento = new Agendamento(quadra);
-                        agendamento.data = teclado("Data: ");
-                        agendamento.horario = teclado("Horário: ");
+                        agendamento.data = dataSelecionada;
+                        agendamento.horario = horariosDisponiveis[indiceHorario];
                         agendamento.nomeCliente = teclado("Nome do cliente: ");
                         agendamentos.push(agendamento);
                         salvarAgendamento(agendamentos);
                         console.log("Agendamento realizado com sucesso!");
-                    } else {
+                    }} else {
                         console.log("Índice inválido.");
                     }
                 } else{break;}} 
