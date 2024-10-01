@@ -8,26 +8,49 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <header>
+      <img src="/Icon.png" alt="" className='img-logo'/>
+      <div className='containerH'>
+        <h1>Imobiliaria SM</h1>
+        <h2>App: Pré-cadastro de inquilinos</h2>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    </header>
+    <main>
+      <form action="">
+        <label htmlFor="">Nome do inquilino:</label>
+        <input type="text" placeholder='Digite o nome do inquilino'/>
+        <label htmlFor="">Salário Atual R$:</label>
+        <input type="number" name="salario" id="salario" placeholder='Digite o salário do inquilino'/>
+        <label htmlFor="">Imóvel Desejado</label>
+        <select name="imovel" id="imovel" >
+          <option value="casaResidencial">Casa Residencial</option>
+          <option value="casaComercial">Casa Comercial</option>
+          <option value="apartamento">Apartamento</option>
+          <option value="salaComercial">Sala Comercial</option>
+          <option value="loja">Loja</option>
+        </select>
+       
+        <label htmlFor="">Garantias:</label>
+        <div className="containerGarantia">
+          <div><input type="checkbox" name="fiador" id="fiador" /><span>Fiador</span></div>
+          <div><input type="checkbox" name="outroImovel" id="outroImovel" /><span className='espaco'>Outro Imovel</span></div>
+          <div><input type="checkbox" name="seguroFianca" id="seguroFianca"/><span className='espaco'>Seguro Fiança</span></div>
+          
+        </div>
+        <div className="containerButao">
+        <input type="submit" value="Verificar Situação" className='button1'/>
+        <input type="reset" value="Limpar Dados" className='button2'/>
+        </div>
+      </form>
+      <section className='mensagem'>
+        <img src="/Icon.png" alt="" className='img-mensagem'/>
+        <div className='text'>
+          <h3>Mensagem 1</h3>
+          <h3>Mensagem 2</h3>
+          <h3>Mensagem 3</h3>
+        </div>
+      </section>
+    </main>
     </>
   )
 }

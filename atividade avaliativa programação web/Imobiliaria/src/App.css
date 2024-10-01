@@ -1,0 +1,66 @@
+header {
+    display: flex;
+}
+
+.img-logo {
+    width: 125px;
+    height: 125px;
+    margin-right: 10px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    width: 30%;
+    margin-top: 2rem;
+}
+
+form label {
+    margin-top: 1rem;
+}
+
+.containerGarantia {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.containerButao {
+    margin-top: 1rem;
+    display: flex;
+    width: 55%;
+    justify-content: space-between;
+}
+
+.containerButao input{
+    height: 2rem;
+    color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.button1 {
+    background-color: #007bff;
+}
+
+.button2 {
+    background-color: #dc3545;
+}
+
+
+.mensagem {
+    display: flex;
+}
+
+.img-mensagem {
+    width: 125px;
+    height: 125px;
+    margin-right: 10px;
+}
+
+.text h3 {
+    font-size: 20px;
+}

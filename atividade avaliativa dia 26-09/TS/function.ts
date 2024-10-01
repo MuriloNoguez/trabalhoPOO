@@ -8,7 +8,7 @@ export function salvarQuadras(quadras: Quadra[]) {
     fs.writeFileSync('quadras.txt', dados, { encoding: 'utf8', flag: 'a' });
 }
 
-//////////////////////CARREGA QUADRAS////////////////////////
+
 //////////////////////CARREGA QUADRAS////////////////////////
 export function carregarQuadras(): Quadra[] {
     if (!fs.existsSync('quadras.txt')) {  
